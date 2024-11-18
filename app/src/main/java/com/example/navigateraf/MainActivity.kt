@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         // Настройка NavController с BottomNavigationView
         val bottomNav = binding.navView
         bottomNav.setupWithNavController(navController)
+        //TODO
         bottomNav.selectedItemId = R.id.counterFragment
 
         if (savedInstanceState == null) {

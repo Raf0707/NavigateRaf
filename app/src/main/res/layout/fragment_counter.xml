@@ -31,6 +31,7 @@
         app:icon="@drawable/ic_baseline_format_list_bulleted_24"
         app:iconGravity="textEnd"
         app:iconSize="50dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.144"
