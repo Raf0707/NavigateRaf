@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navgraph"
+    app:startDestination="@id/appAboutFragment">
+
+    <fragment
+        android:id="@+id/appAboutFragment"
+        android:name="com.example.navigateraf.ui.app_about.AppAboutFragment"
+        android:label="fragment_app_about"
+        tools:layout="@layout/fragment_app_about" >
+        <action
+            android:id="@+id/action_appAboutFragment_to_settingsFragment2"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_appAboutFragment_to_counterFragment"
+            app:destination="@id/counterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/counterFragment"
+        android:name="com.example.navigateraf.ui.counter.CounterFragment"
+        android:label="fragment_counter"
+        tools:layout="@layout/fragment_counter" >
+        <action
+            android:id="@+id/action_counterFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_counterFragment_to_appAboutFragment"
+            app:destination="@id/appAboutFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.navigateraf.ui.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_appAboutFragment"
+            app:destination="@id/appAboutFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_counterFragment"
+            app:destination="@id/counterFragment" />
+    </fragment>
+</navigation>

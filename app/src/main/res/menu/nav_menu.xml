@@ -3,17 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/enterHome"
-        android:icon="@drawable/home"
-        android:title="Войти" />
-
-    <item
-        android:id="@+id/counter"
+        android:id="@+id/counterFragment"
         android:icon="@drawable/baseline_task_black"
         android:title="Счетчик" />
 
     <item
-        android:id="@+id/about_app"
+        android:id="@+id/appAboutFragment"
         android:icon="@drawable/ic_vector_info"
         android:title="О приложении" />
 
