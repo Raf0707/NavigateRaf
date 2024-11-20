@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         val bottomNav = binding.navView
         bottomNav.setupWithNavController(navController)
         //TODO
-        bottomNav.selectedItemId = R.id.counterFragment
+        //bottomNav.selectedItemId = R.id.counterFragment
 
         if (savedInstanceState == null) {
             navController.navigate(R.id.counterFragment)

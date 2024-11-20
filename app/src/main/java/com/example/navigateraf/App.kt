@@ -29,7 +29,7 @@ class App : Application() {
     companion object {
         var instance: App? = null
 
-        fun getInstance(): App? {
+        fun get(): App? {
             if (instance == null) instance = App()
             return instance
         }
