@@ -22,6 +22,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.navigateraf.R
 import com.example.navigateraf.databinding.FragmentCounterBinding
+import com.example.navigateraf.ui.counter.CounterDataStore.dataStore
 import com.example.navigateraf.util.OnSwipeTouchListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -35,6 +36,10 @@ object CounterPreferencesKeys {
     val COUNTER_PROGRESS = intPreferencesKey("counter_progress")
 }
 
+object CounterDataStore {
+    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "counter_data")
+}
+
 class CounterFragment : Fragment() {
     private lateinit var binding: FragmentCounterBinding
     private lateinit var handler: Handler
@@ -44,8 +49,9 @@ class CounterFragment : Fragment() {
 
     private val defaultValue = "10"
     private var maxValue: Int = 0
+    private val dataStore by lazy { requireContext().dataStore }
 
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "counter_data")
+    //private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "counter_data")
 
     private var isEditing = false
     override fun onCreateView(
@@ -232,19 +238,23 @@ class CounterFragment : Fragment() {
     }
 
     private fun removeCounterAlert() {
+        vibrator.vibrate(200)
         MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
             .setTitle("Remove")
             .setMessage("Вы уверены, что хотите очистить данные счетчика?")
             .setPositiveButton("Очистить") { _, _ ->
+                vibrator.vibrate(200)
                 binding.counterTitle.text?.clear()
                 binding.counterTarget.text?.clear()
+                counter = 0
+                binding.gestureCounter.text = "0"
             }
             .setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
             .show()
     }
 
     private suspend fun saveCounterData(title: String, target: Int, progress: Int) {
-        requireContext().dataStore.edit { preferences ->
+        dataStore.edit { preferences ->
             preferences[CounterPreferencesKeys.COUNTER_TITLE] = title
             preferences[CounterPreferencesKeys.COUNTER_TARGET] = target
             preferences[CounterPreferencesKeys.COUNTER_PROGRESS] = progress
@@ -253,12 +263,11 @@ class CounterFragment : Fragment() {
 
     private fun loadCounterData() {
         lifecycleScope.launch {
-            requireContext().dataStore.data
+            dataStore.data
                 .map { preferences ->
                     val title = preferences[CounterPreferencesKeys.COUNTER_TITLE] ?: ""
                     val target = preferences[CounterPreferencesKeys.COUNTER_TARGET] ?: defaultValue.toInt()
                     val progress = preferences[CounterPreferencesKeys.COUNTER_PROGRESS] ?: 0
-
                     Triple(title, target, progress)
                 }
                 .collect { (title, target, progress) ->
@@ -271,6 +280,14 @@ class CounterFragment : Fragment() {
     }
 
     private fun saveData() {
+        if (binding.counterTitle.text.toString().isEmpty()) {
+            binding.counterTitle.setText("Счетчик")
+        }
+
+        if (binding.counterTarget.text.toString().isEmpty()) {
+            binding.counterTarget.setText(defaultValue)
+        }
+
         lifecycleScope.launch {
             saveCounterData(
                 binding.counterTitle.text.toString(),
@@ -278,36 +295,6 @@ class CounterFragment : Fragment() {
                 counter
             )
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        saveData()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        saveData()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        saveData()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        saveData()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        saveData()
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        saveData()
     }
 
 }
